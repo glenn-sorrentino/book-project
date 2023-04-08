@@ -19,39 +19,41 @@ pip install Flask beautifulsoup4 requests
 
 # Create project directory structure
 echo "Creating project directory structure..."
-mkdir -p data/{css,chapters}
-touch data/css/style.css
-touch data/chapters/toc.html
-touch data/cover.html
+mkdir -p book_project/{css,chapters}
+touch book_project/css/style.css
+touch book_project/chapters/toc.html
+touch book_project/cover.html
 
 # Configure Nginx
 echo "Configuring Nginx..."
-sudo rm -f /etc/nginx/sites-enabled/default
-sudo bash -c 'cat > /etc/nginx/sites-available/book-project << EOL
+
+sudo ln -sf /etc/nginx/sites-available/book-project.nginx /etc/nginx/sites-enabled/
+sudo nginx -t && sudo systemctl restart nginx
+
+cat > /etc/nginx/sites-available/book-project.nginx << EOL
 server {
     listen 80;
     server_name localhost;
-    root /data;
-    index cover.html;
 
     location / {
-        try_files \$uri \$uri/ =404;
-    }
-
-    location /chapters {
-        autoindex on;
+        proxy_pass http://127.0.0.1:5000;
+        proxy_set_header Host \$host;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto \$scheme;
     }
 }
-EOL'
-sudo ln -sf /etc/nginx/sites-available/book-project /etc/nginx/sites-enabled/
+EOL
+
+sudo ln -sf /etc/nginx/sites-available/book_project /etc/nginx/sites-enabled/
 sudo systemctl restart nginx
 
 # Configure Tor Onion Service
 echo "Configuring Tor Onion Service..."
 sudo bash -c 'cat >> /etc/tor/torrc << EOL
-HiddenServiceDir /var/lib/tor/book-project/
+HiddenServiceDir /var/lib/tor/book_project/
 HiddenServiceVersion 3
-HiddenServicePort 80 127.0.0.1:80
+HiddenServicePort 80 127.0.0.1:5000
 EOL'
 sudo systemctl restart tor
 sleep 10
