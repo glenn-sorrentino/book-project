@@ -8,7 +8,11 @@ app = Flask(__name__)
 
 def kill_process_on_port(port):
     command = f"lsof -t -i :{port}"
-    process_ids = subprocess.check_output(command, shell=True).decode().strip().split('\n')
+    try:
+        process_ids = subprocess.check_output(command, shell=True, stderr=subprocess.DEVNULL).decode().strip().split('\n')
+    except subprocess.CalledProcessError:
+        process_ids = []
+
     for process_id in process_ids:
         if process_id:
             os.system(f"kill {process_id}")
