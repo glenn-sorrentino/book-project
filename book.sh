@@ -16,7 +16,7 @@ source venv/bin/activate
 
 # Install Python packages
 echo "Installing Python packages..."
-pip install beautifulsoup4 requests
+pip install Flask beautifulsoup4 requests
 
 # Create project directory structure
 echo "Creating project directory structure..."
@@ -32,7 +32,7 @@ sudo bash -c 'cat > /etc/nginx/sites-available/book_project << EOL
 server {
     listen 80;
     server_name localhost;
-    root /path/to/your/book_project;
+    root /book_project;
     index cover.html;
 
     location / {
@@ -62,3 +62,4 @@ sudo cat /var/lib/tor/book_project/hostname
 
 # Instructions
 echo "Installation complete! To start working on your project, activate the virtual environment by running 'source venv/bin/activate'."
+python app.py
