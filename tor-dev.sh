@@ -2,8 +2,7 @@
 
 # Update system
 echo "Updating system..."
-sudo apt-get update
-sudo apt-get upgrade -y
+apt update && apt -y upgrade && apt -y autoremove
 
 # Install dependencies
 echo "Installing dependencies..."
