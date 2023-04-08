@@ -21,7 +21,22 @@ def download_book(url):
     book_title = soup.title.string
     book_directory = os.path.join('book_project', book_title)
     os.makedirs(book_directory, exist_ok=True)
-    # Download and save the cover, toc, and chapters here
+
+    # Extract the cover, table of contents, and chapters
+    cover = soup.find('body')
+    toc = soup.find('div', {'id': 'toc'})
+    chapters = soup.find_all('div', {'class': 'chapter'})
+
+    # Save the cover, table of contents, and chapters as HTML files
+    with open(os.path.join(book_directory, 'cover.html'), 'w') as f:
+        f.write(str(cover))
+
+    with open(os.path.join(book_directory, 'chapters', 'toc.html'), 'w') as f:
+        f.write(str(toc))
+
+    for i, chapter in enumerate(chapters):
+        with open(os.path.join(book_directory, 'chapters', f'chapter-{i+1}.html'), 'w') as f:
+            f.write(str(chapter))
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
