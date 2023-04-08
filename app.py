@@ -18,7 +18,7 @@ def kill_process_on_port(port):
             os.system(f"kill {process_id}")
 
 # Kill any process running on port 8080
-kill_process_on_port(8080)
+kill_process_on_port(5000)
 
 @app.route('/')
 def index():
@@ -58,5 +58,5 @@ def download_book(url):
             f.write(str(chapter))
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
 
