@@ -54,6 +54,7 @@ HiddenServiceVersion 3
 HiddenServicePort 80 127.0.0.1:80
 EOL'
 sudo systemctl restart tor
+sleep 10
 
 # Display Onion address
 echo "Displaying Onion address..."
