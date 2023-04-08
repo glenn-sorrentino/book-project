@@ -19,7 +19,7 @@ pip install requests beautifulsoup4
 mkdir -p root/css root/chapters
 
 # Create a basic CSS file
-cat > root/css/style.css << EOL
+tee > root/css/style.css << EOL
 body {
   font-family: Arial, sans-serif;
   font-size: 16px;
@@ -28,7 +28,7 @@ body {
 EOL
 
 # Tor onion service configuration
-sudo cat >> /etc/tor/torrc << EOL
+tee >> /etc/tor/torrc << EOL
 RunAsDaemon 1
 HiddenServiceDir /var/lib/tor/myonionservice/
 HiddenServicePort 80 127.0.0.1:8080
@@ -43,7 +43,7 @@ sudo nginx -t && sudo systemctl restart nginx
 # Set up Nginx and Tor onion service
 
 # Nginx configuration
-sudo cat > /etc/nginx/sites-available/myonionservice.nginx << EOL
+tee > /etc/nginx/sites-available/myonionservice.nginx << EOL
 server {
     listen 80;
     server_name localhost;
