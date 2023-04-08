@@ -18,7 +18,7 @@ def kill_process_on_port(port):
             os.system(f"kill {process_id}")
 
 # Kill any process running on port 8080
-kill_process_on_port(5000)
+kill_process_on_port(8080)
 
 @app.route('/')
 def index():
@@ -34,7 +34,7 @@ def download_book(url):
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
     book_title = soup.title.string
-    book_directory = os.path.join('book_project', book_title)
+    book_directory = os.path.join('onion-press', book_title)
     os.makedirs(book_directory, exist_ok=True)
 
     # Create the 'chapters' directory inside the 'book_directory'
@@ -58,5 +58,5 @@ def download_book(url):
             f.write(str(chapter))
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=8080, debug=True)
 
