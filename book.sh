@@ -6,7 +6,7 @@ apt-get update && apt-get -y dist-upgrade && apt -y autoremove
 
 # Install dependencies
 echo "Installing dependencies..."
-apt install -y python3 python3-pip python3-venv nginx tor
+apt install -y python3 python3-pip python3-venv nginx tor lsof
 
 # Create a virtual environment
 echo "Creating a virtual environment..."
@@ -26,8 +26,8 @@ touch data/cover.html
 
 # Configure Nginx
 echo "Configuring Nginx..."
-sudo rm /etc/nginx/sites-enabled/default
-sudo bash -c 'cat > /etc/nginx/sites-available/data << EOL
+sudo rm -f /etc/nginx/sites-enabled/default
+sudo bash -c 'cat > /etc/nginx/sites-available/book-project << EOL
 server {
     listen 80;
     server_name localhost;
@@ -43,13 +43,13 @@ server {
     }
 }
 EOL'
-sudo ln -s /etc/nginx/sites-available/data /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/book-project /etc/nginx/sites-enabled/
 sudo systemctl restart nginx
 
 # Configure Tor Onion Service
 echo "Configuring Tor Onion Service..."
 sudo bash -c 'cat >> /etc/tor/torrc << EOL
-HiddenServiceDir /var/lib/tor/data/
+HiddenServiceDir /var/lib/tor/book-project/
 HiddenServiceVersion 3
 HiddenServicePort 80 127.0.0.1:80
 EOL'
@@ -57,7 +57,7 @@ sudo systemctl restart tor
 
 # Display Onion address
 echo "Displaying Onion address..."
-sudo cat /var/lib/tor/data/hostname
+sudo cat /var/lib/tor/book-project/hostname
 
 # Instructions
 echo "Installation complete! To start working on your project, activate the virtual environment by running 'source venv/bin/activate'."
