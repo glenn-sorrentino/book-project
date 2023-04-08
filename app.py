@@ -2,8 +2,19 @@ from flask import Flask, render_template, request, redirect
 import os
 import requests
 from bs4 import BeautifulSoup
+import subprocess
 
 app = Flask(__name__)
+
+def kill_process_on_port(port):
+    command = f"lsof -t -i :{port}"
+    process_ids = subprocess.check_output(command, shell=True).decode().strip().split('\n')
+    for process_id in process_ids:
+        if process_id:
+            os.system(f"kill {process_id}")
+
+# Kill any process running on port 8080
+kill_process_on_port(8080)
 
 @app.route('/')
 def index():
