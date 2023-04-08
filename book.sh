@@ -43,7 +43,7 @@ server {
     }
 }
 EOL'
-sudo ln -s /etc/nginx/sites-available/book-project /etc/nginx/sites-enabled/
+sudo ln -sf /etc/nginx/sites-available/book-project /etc/nginx/sites-enabled/
 sudo systemctl restart nginx
 
 # Configure Tor Onion Service
