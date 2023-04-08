@@ -19,7 +19,7 @@ pip install Flask beautifulsoup4 requests
 
 # Create project directory structure
 echo "Creating project directory structure..."
-mkdir -p book_project/{css,chapters}
+mkdir -p onion-press/{css,chapters}
 touch onion-press/css/style.css
 touch onion-press/chapters/toc.html
 touch onion-press/cover.html
@@ -31,7 +31,7 @@ sudo bash -c 'cat > /etc/nginx/sites-available/onion-press << EOL
 server {
     listen 80;
     server_name localhost;
-    root /book_project;
+    root /book-project;
     index cover.html;
 
     location / {
