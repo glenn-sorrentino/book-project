@@ -60,5 +60,4 @@ sudo systemctl restart tor
 echo "Displaying Onion address..."
 sudo cat /var/lib/tor/book_project/hostname
 
-# Instructions
-echo "Installation complete! To start working on your project, activate the virtual environment by running 'source venv/bin/activate'."
+source venv/bin/activate
