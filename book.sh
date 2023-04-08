@@ -19,19 +19,19 @@ pip install Flask beautifulsoup4 requests
 
 # Create project directory structure
 echo "Creating project directory structure..."
-mkdir -p book_project/{css,chapters}
-touch book_project/css/style.css
-touch book_project/chapters/toc.html
-touch book_project/cover.html
+mkdir -p data/{css,chapters}
+touch data/css/style.css
+touch data/chapters/toc.html
+touch data/cover.html
 
 # Configure Nginx
 echo "Configuring Nginx..."
 sudo rm /etc/nginx/sites-enabled/default
-sudo bash -c 'cat > /etc/nginx/sites-available/book_project << EOL
+sudo bash -c 'cat > /etc/nginx/sites-available/data << EOL
 server {
     listen 80;
     server_name localhost;
-    root /book_project;
+    root /data;
     index cover.html;
 
     location / {
@@ -43,13 +43,13 @@ server {
     }
 }
 EOL'
-sudo ln -s /etc/nginx/sites-available/book_project /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/data /etc/nginx/sites-enabled/
 sudo systemctl restart nginx
 
 # Configure Tor Onion Service
 echo "Configuring Tor Onion Service..."
 sudo bash -c 'cat >> /etc/tor/torrc << EOL
-HiddenServiceDir /var/lib/tor/book_project/
+HiddenServiceDir /var/lib/tor/data/
 HiddenServiceVersion 3
 HiddenServicePort 80 127.0.0.1:80
 EOL'
@@ -57,7 +57,7 @@ sudo systemctl restart tor
 
 # Display Onion address
 echo "Displaying Onion address..."
-sudo cat /var/lib/tor/book_project/hostname
+sudo cat /var/lib/tor/data/hostname
 
 # Instructions
 echo "Installation complete! To start working on your project, activate the virtual environment by running 'source venv/bin/activate'."
