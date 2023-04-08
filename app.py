@@ -33,6 +33,10 @@ def download_book(url):
     book_directory = os.path.join('book_project', book_title)
     os.makedirs(book_directory, exist_ok=True)
 
+    # Create the 'chapters' directory inside the 'book_directory'
+    chapters_directory = os.path.join(book_directory, 'chapters')
+    os.makedirs(chapters_directory, exist_ok=True)
+
     # Extract the cover, table of contents, and chapters
     cover = soup.find('body')
     toc = soup.find('div', {'id': 'toc'})
@@ -42,11 +46,11 @@ def download_book(url):
     with open(os.path.join(book_directory, 'cover.html'), 'w') as f:
         f.write(str(cover))
 
-    with open(os.path.join(book_directory, 'chapters', 'toc.html'), 'w') as f:
+    with open(os.path.join(chapters_directory, 'toc.html'), 'w') as f:
         f.write(str(toc))
 
     for i, chapter in enumerate(chapters):
-        with open(os.path.join(book_directory, 'chapters', f'chapter-{i+1}.html'), 'w') as f:
+        with open(os.path.join(chapters_directory, f'chapter-{i+1}.html'), 'w') as f:
             f.write(str(chapter))
 
 if __name__ == '__main__':
